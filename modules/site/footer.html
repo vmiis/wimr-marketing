@@ -1,69 +1,29 @@
 <div id=D__ID>
-    <div id=panel__ID>
-        <ul>
-
-            
-
-            <li><a href="?/sleep-study-in-a-period">Sleep study in a period</a></li>
-            <li><a href="?/sleep-study-2022-average">Monthly average scoring and reporting days in 2022</a></li>
-            <li><a href="?/sleep-study-2021-average">Monthly average scoring and reporting days in 2021</a></li>
-            <li><a href="?/sleep-study-done-but-not-sent">Sleep study report done but not sent</a></li>
-            <li><a href="?/number-of-sleep-study-by-year-and-month">Number of sleep study by year and month</a></li>
-            <li><a href="?/number-of-sleep-study-by-year">Number of sleep study by year</a></li>
-
-            
-        </ul>
+    <div>
+        <a target=_blank href="https://github.com/vmiis/wimr" style='color: #fff'>
+            Open source web portal <span id=year__ID></span>
+        </a>
     </div>
     <script>
-        function F__ID(){
-            //--------------------------------------------------------
-            $('#panel__ID').css('min-height',$vm.min_height);
-            //--------------------------------------------------------
-            $('#D__ID a').on('click',function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                var module_name=$(this).attr('href').replace('?\/','');
-                if(module_name!="") $vm.show_module(module_name,{})
-            })
-            //---------------------------------------------------------------
-        }
+        $vm.footer_ready=1;
+        if($vm.resize_content!=undefined) $vm.resize_content();
+        $('#D__ID').on('dblclick',function(event){
+            event.stopPropagation();
+            if (event.ctrlKey & event.altKey) {
+                var r=confirm("Click OK will refresh the browser to reinstall all modules.");
+                if(r){
+                    localStorage.clear();
+                    location.reload();
+                }
+            }
+	    });
+        $('#year__ID').text(new Date().getFullYear());
     </script>
     <style>
         #D__ID{
-            height:100%;
-            background-color: #fff;
-        }
-        #panel__ID{
-            padding:50px 100px;
-        }
-
-        #panel__ID li a{
-            color:#555;
-            text-decoration: none;
-            margin-right:20px;
-        }
-        #panel__ID li i{
-            color:#ccc;
-            font-size:80%;
-        }
-        
-        #_panel__ID li a:link{
-            color:#555;
-        }
-        #panel__ID li a:visited{
-            color:#555;
-        }
-        #panel__ID li a:hover{
-            color:red;
-        }
-        #panel__ID li a:hover i{
-            color:red;
-        }
-
-        @media screen and (max-width: 1200px) {
-            #panel__ID{
-                padding:10px 10px;
-            }
-        }
+            padding-left:15px;
+            background-color: #333;
+            text-align: center;
+        }            
     </style>
 </div>
