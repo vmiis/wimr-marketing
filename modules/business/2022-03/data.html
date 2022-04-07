@@ -25,6 +25,11 @@
             Postcode|Data.Postcode
             Newsletter|Data.Consent checkbox - correspondence
             Research|Data.Interest in Research
+            Sleep|Data.Sleep
+            Respiration|Data.Respiration
+        `;
+        //-------------------------------------------------
+        /*
             Obstructive Sleep Apnoea (OSA)|Data.Obstructive Sleep Apnoea (OSA)
             Insomnia|Data.Insomnia
             Narcolepsy|Data.Narcolepsy
@@ -36,17 +41,31 @@
             Chronic Bronchitis|Data.Chronic Bronchitis
             Rhinitis|Data.Rhinitis
             None|Data.None of the above
-        `;
-        //-------------------------------------------------
+        */
         var records=[];
         var query=function(){
             var dt1="ISODate(2022-03-01)";
             var dt2="ISODate(2022-04-01)";
             $vm.request({cmd:"find",table:m.Table,query:{"Data.Consent checkbox - correspondence":"Yes",Submit_date:{"$gte":dt1,"$lt":dt2}},options:{}},function(res){
+                records=res.result;
+                for(var i=0;i<res.result.length;i++){
+                    records[i].Data.Sleep="Yes";
+                    if(
+                        records[i].Data["Restless Leg Syndrome (RLS)"]!=undefined ||
+                        records[i].Data["Asthma"]!=undefined ||
+                        records[i].Data["Lung Cancer"]!=undefined ||
+                        records[i].Data["Chronic Obstructive Pulmonary Disease (COPD)"]!=undefined ||
+                        records[i].Data["Emphysema"]!=undefined ||
+                        records[i].Data["Rhinitis"]!=undefined 
+
+                        ){
+                        records[i].Data.Respiration="Yes";
+                    }
+                }
                 records=$vm.grid_render_1("__ID", {
                     name:name,
                     columns:columns,
-                    rows:res.result,
+                    rows:records,
                 },
                 cell_render);
                 $('#total__ID').text(records.length);
