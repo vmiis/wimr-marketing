@@ -9,4 +9,5 @@
     m[p+"records"]      ={url:H+"/business/records/data.html",    Table:"flow-snapforms",  form_module:"jsonv", router:1}
     m[p+"2022-03"]      ={url:H+"/business/2022-03/data.html",    Table:"flow-snapforms",  form_module:"jsonv", router:1}
     m[p+"2022-04"]      ={url:H+"/business/2022-04/data.html",    Table:"flow-snapforms",  form_module:"jsonv", router:1}
+    m[p+"2022-05"]      ={url:H+"/business/2022-05/data.html",    Table:"flow-snapforms",  form_module:"jsonv", router:1}
 })();

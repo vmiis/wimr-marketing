@@ -11,7 +11,7 @@
 <script>
     function F__ID(){
         //-------------------------------------------------
-        var name="2022-04";
+        var name="2022-05";
         //-------------------------------------------------
         var m=$vm.module_list['__MODULE__'];
         //-------------------------------------------------
@@ -35,8 +35,8 @@
         //-------------------------------------------------
         var records=[];
         var query=function(){
-            var dt1="ISODate(2022-04-01)";
-            var dt2="ISODate(2022-05-01)";
+            var dt1="ISODate(2022-05-01)";
+            var dt2="ISODate(2022-06-01)";
             $vm.request({cmd:"find",table:m.Table,query:{"Data.Consent checkbox - correspondence":"Yes",Submit_date:{"$gte":dt1,"$lt":dt2}},options:{}},function(res){
                 records=res.result;
                 for(var i=0;i<res.result.length;i++){
