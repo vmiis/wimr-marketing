@@ -1,0 +1,155 @@
+<div id=toolbar__ID>
+    <button id=query__ID type=button class="btn btn-secondary" title='Query' style='vertical-align: top;margin-right:30px'>Query</button>
+    <span style="margin-right:100px"> </span> 
+    Total Number of records: <span id=total__ID></span>
+    <button id=export__ID type=button class="btn btn-secondary" title='Export' style='vertical-align: top;margin-left:30px'>Export</button>
+</div>
+<div>
+<table id="grid__ID"></table>
+</div>
+
+<script>
+    function F__ID(){
+        //-------------------------------------------------
+        var name="2022-07";
+        //-------------------------------------------------
+        var m=$vm.module_list['__MODULE__'];
+        //-------------------------------------------------
+        var columns=`
+            Date|Submit_date
+            Form|I1
+            First Name|Data.First Name
+            Surname|Data.Surname
+            Email|Data.Patient Email
+            Date of Birth|Data.DOB
+            Gender|Data.Gender
+            Postcode|Data.Postcode
+            Caregiver Name|Data.Caregiver 1 Name
+            Caregiver Email|Data.Caregiver 1 email
+            Caregiver Postcode|Data.Caregiver 1 Postcode
+            Newsletter|Data.Consent checkbox - correspondence
+            Research|Data.Interest in Research
+            Sleep|Data.Sleep
+            Respiration|Data.Respiration
+        `;
+        //-------------------------------------------------
+        var records=[];
+        var query=function(){
+            var dt1="ISODate(2022-07-01)";
+            var dt2="ISODate(2022-08-01)";
+            $vm.request({cmd:"find",table:m.Table,query:{"Data.Consent checkbox - correspondence":"Yes",Submit_date:{"$gte":dt1,"$lt":dt2}},options:{}},function(res){
+                records=res.result;
+                for(var i=0;i<res.result.length;i++){
+                    if(records[i].I1=="Paediatric Sleep Registration"){
+                        records[i].Data["Postcode"]=records[i].Data["Patient postcode"];
+                    }
+                    records[i].Data.Sleep="Yes";
+                    var re=records[i].Data["Research Eligibility"];
+                    if(re!=undefined){
+                        /*
+                        var options=records[i].Data["Research Eligibility"].split(',')
+                        for(var i=0;i<options.length;i++){
+
+                        }
+                        */
+                        if(
+                            re.indexOf("Restless Leg Syndrome (RLS)")!=-1 ||
+                            re.indexOf("Asthma")!=-1 ||
+                            re.indexOf("Lung Cancer")!=-1 ||
+                            re.indexOf("Chronic Obstructive Pulmonary Disease (COPD)")!=-1 ||
+                            re.indexOf("Emphysema")!=-1 ||
+                            re.indexOf("Rhinitis")!=-1 
+                        ){
+                            records[i].Data.Respiration="Yes";
+                        }
+                    }
+                    /*
+                    if(
+                        records[i].Data["Restless Leg Syndrome (RLS)"]!=undefined ||
+                        records[i].Data["Asthma"]!=undefined ||
+                        records[i].Data["Lung Cancer"]!=undefined ||
+                        records[i].Data["Chronic Obstructive Pulmonary Disease (COPD)"]!=undefined ||
+                        records[i].Data["Emphysema"]!=undefined ||
+                        records[i].Data["Rhinitis"]!=undefined 
+
+                        ){
+                        records[i].Data.Respiration="Yes";
+                    }
+                    */
+                }
+                records=$vm.grid_render_1("__ID", {
+                    name:name,
+                    columns:columns,
+                    rows:records//res.result,
+                },
+                cell_render);
+                $('#total__ID').text(records.length);
+            });
+        }
+        var cell_render=function(header,c){
+            if(header=="Date") return c.substr(0,10);
+            return c;
+        }
+        //-------------------------------------------------
+        $('#D__ID').on('load',function(){
+            query();
+        })
+        //-------------------------------------------------
+        $('#query__ID').on('click',function(){
+            query();
+        })
+        //-------------------------------------------------
+        $('#export__ID').on('click',function(){
+            if(records!=[]) $vm.download_csv(name+".csv",records);
+        })
+        //-------------------------------------------------       
+    }
+</script>
+<style>
+    #D__ID{
+        height:100%;
+        background-color:#fff;
+    }
+
+    #toolbar__ID{
+        background-color:#ccc;
+        padding:5px 10px;
+        margin-bottom:0px;
+        overflow:hidden
+    }
+    #D__ID table{
+        font-size:13px;
+        font-family: Helvetica, Arial, sans-serif;
+    }
+    #grid__ID{
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin: 0;
+        border-width: 0;
+    }
+    #grid__ID th{
+        font-weight: bold;
+        background-color:#EEE;
+        padding:5px;
+        border: 1px solid #CCC;
+    }
+    #grid__ID td{
+        font-weight: 300;
+        /*background-color:#FFF;*/
+        padding:3px;
+        border: 1px solid #CCC;
+        vertical-align: top;
+        white-space: pre;
+        background-color: white;
+    }
+
+    #grid__ID tr:hover { 
+        background-color:#EEE; 
+    }        
+    
+    #grid__ID tr td:first-child{
+        padding-left:10px;
+        padding-right:10px;
+        background-color:#EEE;
+    }
+</style>
